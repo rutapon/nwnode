@@ -33,7 +33,7 @@ $(function () {
                   { "ecat": "vt,vi", "tentry": "drag mounse ที่หน้า page ไปด้านขวาเพื่อค้นหา" },
                   { "ecat": "vt,vi", "tentry": "เมื่อย้อหน้า page แคบลง word list จะซ่อนและโชว์โดยอัตโนมัติเมื่อค้นหา" },
 
-                { "ecat": "*", "tentry": "ควรใช้ chrome หรือ firefox ในการแสดงผล" }],
+                { "ecat": "*", "tentry": "ควรใช้ google chrome หรือ firefox ในการแสดงผล" }],
             //"esyn": "experiment, tax, try"
         },
         "proTh": "นิวดิค'",
