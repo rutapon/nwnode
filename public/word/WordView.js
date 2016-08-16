@@ -96,7 +96,7 @@ var app = app || { models: {}, collections: {}, views: {} };
                                 self.searchWord(val, function (searchWordArray) {
                                     self.addSearchWord(searchWordArray);
                                 });
-                            }, 300);
+                            }, 200);
                         } else {
                             clearTimeout(self.seharchTimeOut);
                             self.seharchTimeOut = setTimeout(function () {
@@ -104,7 +104,7 @@ var app = app || { models: {}, collections: {}, views: {} };
                                 self.searchWord(val, function (searchWordArray) {
                                     self.addSearchWord(searchWordArray);
                                 });
-                            }, 500);
+                            }, 350);
                         }
                     }
                 });
@@ -190,7 +190,7 @@ var app = app || { models: {}, collections: {}, views: {} };
             selectWord: function (val, cb) {
                 var self = this;
                 if (val) {
-                    console.log('selectWord', val);
+                    //console.log('selectWord', val);
                     var wordDiv = $('#main').find('[data-word="' + val + '"]');
                     if (wordDiv.length > 0) {
                         $('#main').prepend(wordDiv);
