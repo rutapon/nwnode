@@ -3,6 +3,7 @@
 
 /// <reference path="WordModel.js" />
 /// <reference path="../lib/nedb/nedb.js" />
+/// <reference path="../NwLogWords/logWords.js" />
 
 (function (context, undefined) {
     //'use strict';
@@ -27,9 +28,9 @@
     var WordCollection = Backbone.Collection.extend({
         model: WordModel,
         serviceMethod: {},
-        debug_log: new Nedb(),
-        mapLog: {},
-        longing: true,
+        //debug_log: new Nedb(),
+        //mapLog: {},
+        //longing: true,
         logWordObj: new logWords(),
         initialize: function (cb) {
 
@@ -52,48 +53,25 @@
                 if (console && console.log) {
                     var dataSp = data.split('\n');
 
-                    //dataSp = _.sortBy(dataSp, function (doc) {
-                    //    //var prefx = doc.esearch == text ? 0 : 1;
-                    //    return doc.esearch.toLowerCase();
-                    //});
-                    self.mapLog = {};
-                    //self.debug_log = dataSp;
-                    //console.log();
 
-                    for (var i in dataSp) {
+                    //self.mapLog = {};
 
-                        var key = dataSp[i].slice(0, 2).toLowerCase();
-                        //if (key.length < 4) {
-                        ////    //key = -1;// 'data@mini';
-                        //    if (!self.mapLog['data@mini']) {
-                        //        self.mapLog['data@mini'] = new Nedb();
-                        //    }
-                        //    self.mapLog['data@mini'].insert({ esearch: dataSp[i] });
-                        //}
+                    //for (var i in dataSp) {
 
-                        if (!self.mapLog[key]) {
-                            self.mapLog[key] = new Nedb();
-                        }
-                        self.mapLog[key].insert({ esearch: dataSp[i] });
-                    }
-                    self.longing = false;
-                    //dataSp = dataSp.map(function (v) {
-                    //    return { esearch: v };
-                    //})
-                    console.log(_.keys(self.mapLog).length);
+                    //    var key = dataSp[i].slice(0, 2).toLowerCase();
 
-                    cb();
+                    //    if (!self.mapLog[key]) {
+                    //        self.mapLog[key] = new Nedb();
+                    //    }
+                    //    self.mapLog[key].insert({ esearch: dataSp[i] });
+                    //}
+                    //self.longing = false;
 
-                    //self.debug_log.insert(dataSp, function (err) {
-                    //    //  self.debug_log.ensureIndex({ fieldName: 'esearch' }, function (err) {
-                    //    //self.debug_log.count({}, function (err, count) {
-                    //    //    //alert(count);
+                    self.logWordObj.insertWords(dataSp, function (num) {
+                        console.log('insertWords', num);
+                        cb();
 
-                    //    //});
-                    //    cb();
-                    //    // });
-
-                    //});
+                    });
                 }
             })
 
@@ -104,11 +82,11 @@
 
         },
         searchStartWith_limit: function (text, limit, cb) {
-            if (text.length < 2) {
-                this.serviceMethod.searchStartWith_limit(text, limit, cb);
-            } else {
-                this.ssw0(text, limit, cb);
-            }
+            //if (text.length < 2) {
+            //    this.serviceMethod.searchStartWith_limit(text, limit, cb);
+            //} else {
+            this.ssw(text, limit, cb);
+            //}
         },
         searchContain: function (text, cb) {
             var query = { esearch: new RegExp(text) };
@@ -125,216 +103,10 @@
         findWord: function (text, cb) {
             this.serviceMethod.findWord(text, cb);
         },
-        ssw0: function (text, limit, cb) {
-
-            var self = this;
-
-            var key = text.slice(0, 2).toLowerCase();
-
-            //if (key.length < 3) {
-            //    key = 'data@mini';
-            //}
-            self.debug_log = self.mapLog[key];
-
-            if (!self.debug_log) {
-                cb([]);
-                return;
-            }
-
-
-            var reg = new RegExp('^' + text, 'i');
-            var query = { esearch: { $regex: reg } };
-
-            self.debug_log.find(query, { esearch: 1, _id: 0 })
-             .sort({ esearch: 1 })
-           .limit(limit).exec(function (err, docs) {
-               cb(docs);
-               if (docs.length != 0) {
-                   var fw = _.findWhere(docs, { esearch: text });
-                   if (!fw) {
-                       self.debug_log.findOne({ esearch: text }, function (err, doc) {
-
-                           if (doc) {
-                               docs.unshift(doc);
-                           }
-
-                           docs = _.sortBy(docs, function (doc) {
-                               //var prefx = doc.esearch == text ? 0 : 1;
-                               return doc.esearch.toLowerCase();
-                           });
-
-                           cb(docs);
-                       });
-                   }
-                   else {
-
-                       for (var i in docs) {
-                           if (docs[i].esearch == text) {
-                               docs[i] = false;
-                               break;
-                           }
-                       }
-
-                       docs = _.compact(docs);
-                       docs.unshift(fw);
-                       //docs = _.chain(docs).uniq(function (doc) {
-                       //    return doc._id;
-                       //}).sortBy(function (doc) {
-                       //    return doc.esearch.toLowerCase()
-                       //}).value();
-
-                       //docs = _.sortBy(docs, function (doc) {
-                       //    var prefx = doc.esearch == text ? 0 : 1;
-                       //    return prefx + doc.esearch.toLowerCase();
-                       //});
-
-                       cb(docs);
-                   }
-               } else {
-
-                   cb(docs);
-               }
-
-           });
-        },
         ssw: function (text, limit, cb) {
-
-            var self = this;
-            var reg = new RegExp('^' + text, 'i');
-            var query = { esearch: { $regex: reg } };
-
-            self.debug_log.find(query, { esearch: 1, _id: 0 })
-             .sort({ esearch: 1 })
-           .limit(limit).exec(function (err, docs) {
-               cb(docs);
-               if (docs.length != 0) {
-                   var fw = _.findWhere(docs, { esearch: text });
-                   if (!fw) {
-                       self.debug_log.findOne({ esearch: text }, function (err, doc) {
-
-                           if (doc) {
-                               docs.unshift(doc);
-                           }
-
-                           docs = _.sortBy(docs, function (doc) {
-                               //var prefx = doc.esearch == text ? 0 : 1;
-                               return doc.esearch.toLowerCase();
-                           });
-                           console.log('ssw', text);
-                           cb(docs);
-                       });
-                   }
-                   else {
-
-                       for (var i in docs) {
-                           if (docs[i].esearch == text) {
-                               docs[i] = false;
-                               break;
-                           }
-                       }
-
-                       docs = _.compact(docs);
-                       docs.unshift(fw);
-                       //docs = _.chain(docs).uniq(function (doc) {
-                       //    return doc._id;
-                       //}).sortBy(function (doc) {
-                       //    return doc.esearch.toLowerCase()
-                       //}).value();
-
-                       //docs = _.sortBy(docs, function (doc) {
-                       //    var prefx = doc.esearch == text ? 0 : 1;
-                       //    return prefx + doc.esearch.toLowerCase();
-                       //});
-                       console.log('ssw', text);
-                       cb(docs);
-                   }
-               } else {
-                   console.log('ssw', text);
-                   cb(docs);
-               }
-
-           });
-        },
-        ssw2: function (text, limit, cb) {
-
-            var self = this;
-            var docs = [];
-            var key = text.slice(0, 3);
-
-            var keyid = self.mapLog[key];
-
-            if (!keyid) {
+            this.logWordObj.findWord(text, function (docs) {
                 cb(docs);
-                return;
-            }
-            var reg = new RegExp('^' + text, 'i');
-
-            for (var i = keyid; docs.length < 15 && i < keyid + 1000; i++) {
-                console.log(i, self.debug_log[i]);
-                if (reg.test(self.debug_log[i])) {
-                    docs.push({ esearch: self.debug_log[i] });
-
-                } else {
-                    var currentKey = self.debug_log[i].slice(0, 3);
-                    var currentKeyid = self.mapLog[currentKey];
-                    if (currentKey != key) {
-                        break;
-                    }
-                }
-            }
-
-            if (docs.length != 0) {
-                var fw = _.findWhere(docs, { esearch: text });
-                if (!fw) {
-                    var doc = null;
-                    for (var i = keyid; i < keyid + 100 ; i++) {
-                        if (self.debug_log[i] == text) {
-                            doc = { esearch: text };
-                            break;
-                        }
-                    }
-
-                    if (doc) {
-                        docs.unshift(doc);
-                    }
-
-                    docs = _.sortBy(docs, function (doc) {
-                        //var prefx = doc.esearch == text ? 0 : 1;
-                        return doc.esearch.toLowerCase();
-                    });
-                    console.log('ssw', text);
-                    cb(docs);
-
-                }
-                else {
-
-                    for (var i in docs) {
-                        if (docs[i].esearch == text) {
-                            docs[i] = false;
-                            break;
-                        }
-                    }
-
-                    docs = _.compact(docs);
-                    docs.unshift(fw);
-                    //docs = _.chain(docs).uniq(function (doc) {
-                    //    return doc._id;
-                    //}).sortBy(function (doc) {
-                    //    return doc.esearch.toLowerCase()
-                    //}).value();
-
-                    //docs = _.sortBy(docs, function (doc) {
-                    //    var prefx = doc.esearch == text ? 0 : 1;
-                    //    return prefx + doc.esearch.toLowerCase();
-                    //});
-                    console.log('ssw', text);
-                    cb(docs);
-                }
-            }
-            else {
-                console.log('ssw', text);
-                cb(docs);
-            }
+            });
 
         }
 

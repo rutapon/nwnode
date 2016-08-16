@@ -96,7 +96,7 @@ var app = app || { models: {}, collections: {}, views: {} };
                                 self.searchWord(val, function (searchWordArray) {
                                     self.addSearchWord(searchWordArray);
                                 });
-                            }, 200);
+                            }, 100);
                         } else {
                             clearTimeout(self.seharchTimeOut);
                             self.seharchTimeOut = setTimeout(function () {
@@ -104,7 +104,7 @@ var app = app || { models: {}, collections: {}, views: {} };
                                 self.searchWord(val, function (searchWordArray) {
                                     self.addSearchWord(searchWordArray);
                                 });
-                            }, 350);
+                            }, 200);
                         }
                     }
                 });
