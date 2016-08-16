@@ -48,8 +48,6 @@
         initDB: function (cb) {
             var self = this;
             $.ajax({ url: '/word/test/log/debug26.log', type: "GET", }).done(function (data) {
-
-                console.log('loging...');
                 if (console && console.log) {
                     var dataSp = data.split('\n');
 
@@ -68,7 +66,7 @@
                     //self.longing = false;
 
                     self.logWordObj.insertWords(dataSp, function (num) {
-                        console.log('insertWords', num);
+                        //console.log('insertWords', num);
                         cb();
 
                     });

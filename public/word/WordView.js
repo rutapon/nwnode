@@ -48,6 +48,10 @@ var app = app || { models: {}, collections: {}, views: {} };
 
                 $(document).keydown(function (e) {
 
+                    if ( e.ctrlKey) {
+                        return;
+                    }
+
                     //if (!(e.keyCode == 37 || e.keyCode == 39)) {
                     if (e.keyCode != 13) {
                         $("#search-panel").panel("open");
@@ -146,6 +150,9 @@ var app = app || { models: {}, collections: {}, views: {} };
             },
 
             addOne: function (model) {
+                console.log(JSON.stringify(model));
+
+
                 var eachModelView = new app.views.WordEachView({ model: model });
                 var eachModelEl = eachModelView.render().el;
                 this.$el.prepend(eachModelEl);
@@ -198,11 +205,11 @@ var app = app || { models: {}, collections: {}, views: {} };
 
                     } else {
                         self.collection.findWord(val, function (docs) {
-
-
+                         
                             if (_.isArray(docs) && docs.length > 0) {
                                 //addWord(val, docs);
                                 _.each(docs, function (doc) {
+                                
                                     self.collection.add(doc);
                                 });
 

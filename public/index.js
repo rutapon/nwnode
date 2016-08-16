@@ -17,6 +17,30 @@
 
 $(function () {
 
+    var NwdictDiscirpton = {
+        "esearch": "NwDict",
+        "lMn": [{ "tentry": "พจนานุกรม อังกฤษ-ไทย", "ecat": "N", "esyn": "English-Thai Dictionary" },
+            { "tentry": "จำนวนคำหลัก 99360 คำ", "ecat": "N" },
+            { "tentry": "มีคำอ่านออกเสียงภาษาไทย", "ecat": "N" },
+            { "tentry": "มีวิธีการออกเสียงคำ เป็น IPA (International Phonetic Alphabat)", "ecat": "N" },
+            { "tentry": "เน้นที่การแสดงผลที่เรียบง่ายสบายตา", "ecat": "V" },
+            { "tentry": "เน้นที่ความเร็วในการค้นหา", "ecat": "V" },
+            { "tentry": "เน้นที่ความง่ายในการค้นหา", "ecat": "V" }],
+        "hope": { "mn": [{ "tentry": "Special Characters <br> § = synonym<br>☯ = antonym<br> C = confer, compare" }] },
+        "stm": {
+            "mn": [{ "ecat": "vt,vi", "tentry": "กดปุ่มที่มุมซ้ายบนเพื่อค้นหา" },
+                { "ecat": "vt,vi", "tentry": "กดแป้นพิมพ์เพื่อค้นหา" },
+                  { "ecat": "vt,vi", "tentry": "drag mounse ที่หน้า page ไปด้านขวาเพื่อค้นหา" },
+                  { "ecat": "vt,vi", "tentry": "เมื่อย้อหน้า page แคบลง word list จะซ่อนและโชว์โดยอัตโนมัติเมื่อค้นหา" },
+
+                { "ecat": "*", "tentry": "ควรใช้ chrome หรือ firefox ในการแสดงผล" }],
+            //"esyn": "experiment, tax, try"
+        },
+        "proTh": "นิวดิค'",
+        "pro": ["njudɪk"],
+
+    };
+
     //try {
     //    WordCollection = require('../app/word/WordCollection.js');
     //} catch (e) {
@@ -50,8 +74,8 @@ $(function () {
     var wordCollectionObj = new WordCollection();
     wordCollectionObj.setServiceMethod(serviceMethod);
 
+    wordCollectionObj.add(NwdictDiscirpton);
     var wordViewObj = new app.views.WordView({ collection: wordCollectionObj });
-
     $("body").addClass('ui-disabled');
 
     $.mobile.loading('show', {
@@ -63,12 +87,11 @@ $(function () {
 
     setTimeout(function () {
         wordCollectionObj.initDB(function () {
-            console.log('fin');
             $("body").removeClass('ui-disabled');
             $.mobile.loading('hide');
         });
     }, 200);
- 
+
     //wordCollectionObj.searchStartWith('new', function (docs) {
     //    $('body').append(JSON.stringify(docs));
     //}); 
