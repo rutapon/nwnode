@@ -91,11 +91,20 @@ var app = app || { models: {}, collections: {}, views: {} };
                         if (val.length > 2) {
                             clearTimeout(self.seharchTimeOut);
                             self.seharchTimeOut = setTimeout(function () {
+                                clearTimeout(self.seharchTimeOut);
 
                                 self.searchWord(val, function (searchWordArray) {
                                     self.addSearchWord(searchWordArray);
                                 });
                             }, 300);
+                        } else {
+                            clearTimeout(self.seharchTimeOut);
+                            self.seharchTimeOut = setTimeout(function () {
+
+                                self.searchWord(val, function (searchWordArray) {
+                                    self.addSearchWord(searchWordArray);
+                                });
+                            }, 500);
                         }
                     }
                 });

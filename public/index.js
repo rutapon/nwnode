@@ -41,7 +41,6 @@ $(function () {
     wsClient.setOnConnectEventListener(function (socket) {
         var id = wsClient.getId();
         console.log('onConnect ' + id);
-
     });
 
     wsClient.setOnDisconnectEventListener(function myfunction() {
@@ -62,10 +61,14 @@ $(function () {
         html: ""
     });
 
-    wordCollectionObj.initDB(function () {
-        $("body").removeClass('ui-disabled');
-        $.mobile.loading('hide');
-    });
+    setTimeout(function () {
+        wordCollectionObj.initDB(function () {
+            console.log('fin');
+            $("body").removeClass('ui-disabled');
+            $.mobile.loading('hide');
+        });
+    }, 200);
+ 
     //wordCollectionObj.searchStartWith('new', function (docs) {
     //    $('body').append(JSON.stringify(docs));
     //}); 
