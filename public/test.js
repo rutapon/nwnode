@@ -45,7 +45,7 @@
 
         $('#findWord').click(function () {
 
-            stockMethod.findWord('newww', function (num) {
+            stockMethod.findWord('new', function (num) {
                 console.log('num', num);
             });
         });

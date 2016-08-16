@@ -102,16 +102,17 @@
             var esearch = data.esearch;
 
             this.dbConn.searchStartWith(this.colName, { esearch: esearch }, limit, function (docs) {
-
+              
                 if (docs.length > 0 && !_.findWhere(docs, { esearch: esearch })) {
 
-                    self.findWord(esearch, function (doc) {
-
+                    self.dbConn.findOne(self.colName, { esearch: esearch }, function (doc) {
+                     
                         if (doc) {
                             docs.push(doc);
                         }
 
                         docs = _.sortBy(docs, function (doc) {
+                        
                             var prefx = doc.esearch == esearch ? 0 : 1;
                             return prefx + doc.esearch.toLowerCase();
                         });
@@ -153,8 +154,12 @@
 
         },
         findWord: function (data, cb) {
+        
             var esearch = data.esearch;
-            this.dbConn.findOne(this.colName, { esearch: esearch }, cb);
+            this.dbConn.findOne(this.colName, { esearch: esearch }, function (doc) {
+                //console.log('findWord', data,doc);
+                cb(doc);
+            });
         }
     });
 

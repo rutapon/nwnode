@@ -141,7 +141,7 @@ var app = app || { models: {}, collections: {}, views: {} };
                 try {
                     if (val) {
                         //console.log(searchWord, val);
-                        this.collection.searchStartWith_limit(val, 15, function (docs) {
+                        self.collection.searchStartWith_limit(val, 15, function (docs) {
                             var searchWordArray = _.pluck(docs, 'esearch');
                             if (cb) cb(searchWordArray);
                         });
@@ -182,14 +182,17 @@ var app = app || { models: {}, collections: {}, views: {} };
                         if (cb) cb();
 
                     } else {
-                        this.collection.findWord(val, function (docs) {
-
-                            if (docs.length > 0) {
+                        self.collection.findWord(val, function (docs) {
+                          
+                            
+                            if (_.isArray(docs) && docs.length > 0) {
                                 //addWord(val, docs);
                                 _.each(docs, function (doc) {
                                     self.collection.add(doc);
                                 });
 
+                            } else {
+                                self.collection.add(docs);
                             }
                             if (cb) cb(val, docs);
                         });

@@ -78,8 +78,8 @@
 
             },
             findOne: function (tableName, findObj, callback) {
-                var db = this._getDB(tableName);
 
+                var db = this._getDB(tableName);
                 //console.log(findObj);
                 db.findOne(findObj, function (err, docs) {
                     if (callback) callback(docs);

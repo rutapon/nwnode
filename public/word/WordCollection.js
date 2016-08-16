@@ -37,7 +37,7 @@
         },
 
         count: function (cb) {
-            this.stockMethod.count(function (num) {
+            this.serviceMethod.count(function (num) {
                 cb(num);
             });
         },
@@ -50,9 +50,7 @@
 
         },
         searchStartWith_limit: function (text, limit, cb) {
-            this.stockMethod.searchStartWith_limit(text, limit, function (docs) {
-                cb(docs);
-            });
+            this.serviceMethod.searchStartWith_limit(text, limit, cb);
 
         },
         searchContain: function (text, cb) {
@@ -68,7 +66,7 @@
 
         },
         findWord: function (text, cb) {
-            this.stockMethod.findWord(text, cb);
+            this.serviceMethod.findWord(text, cb);
         }
 
     });
