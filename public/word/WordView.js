@@ -150,9 +150,6 @@ var app = app || { models: {}, collections: {}, views: {} };
             },
 
             addOne: function (model) {
-                console.log(JSON.stringify(model));
-
-
                 var eachModelView = new app.views.WordEachView({ model: model });
                 var eachModelEl = eachModelView.render().el;
                 this.$el.prepend(eachModelEl);
