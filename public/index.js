@@ -31,7 +31,7 @@ $(function () {
             "mn": [{ "ecat": "vt,vi", "tentry": "กดปุ่มที่มุมซ้ายบนเพื่อค้นหา" },
                 { "ecat": "vt,vi", "tentry": "กดแป้นพิมพ์เพื่อค้นหา" },
                   { "ecat": "vt,vi", "tentry": "drag mounse ที่หน้า page ไปด้านขวาเพื่อค้นหา" },
-                  { "ecat": "vt,vi", "tentry": "เมื่อย้อหน้า page แคบลง word list จะซ่อนและโชว์โดยอัตโนมัติเมื่อค้นหา" },
+                  { "ecat": "vt,vi", "tentry": "เมื่อย่อหน้า page แคบลง word list จะซ่อนและโชว์โดยอัตโนมัติเมื่อค้นหา" },
 
                 { "ecat": "*", "tentry": "ควรใช้ google chrome หรือ firefox ในการแสดงผล" }],
             //"esyn": "experiment, tax, try"
