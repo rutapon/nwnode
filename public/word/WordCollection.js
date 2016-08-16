@@ -29,7 +29,8 @@
         serviceMethod: {},
         debug_log: new Nedb(),
         mapLog: {},
-        longing:true,
+        longing: true,
+        logWordObj: new logWords(),
         initialize: function (cb) {
 
         },
@@ -75,12 +76,12 @@
                         }
                         self.mapLog[key].insert({ esearch: dataSp[i] });
                     }
-                   self.longing = false;
+                    self.longing = false;
                     //dataSp = dataSp.map(function (v) {
                     //    return { esearch: v };
                     //})
                     console.log(_.keys(self.mapLog).length);
-                 
+
                     cb();
 
                     //self.debug_log.insert(dataSp, function (err) {
@@ -96,14 +97,14 @@
                 }
             })
 
-           // if (cb) cb();
+            // if (cb) cb();
         },
         searchStartWith: function (text, cb) {
             var query = { esearch: new RegExp('^' + text) };
 
         },
         searchStartWith_limit: function (text, limit, cb) {
-            if (text.length<2) {
+            if (text.length < 2) {
                 this.serviceMethod.searchStartWith_limit(text, limit, cb);
             } else {
                 this.ssw0(text, limit, cb);
@@ -128,7 +129,7 @@
 
             var self = this;
 
-            var key = text.slice(0,2).toLowerCase();
+            var key = text.slice(0, 2).toLowerCase();
 
             //if (key.length < 3) {
             //    key = 'data@mini';
@@ -161,7 +162,7 @@
                                //var prefx = doc.esearch == text ? 0 : 1;
                                return doc.esearch.toLowerCase();
                            });
-                          
+
                            cb(docs);
                        });
                    }
@@ -186,11 +187,11 @@
                        //    var prefx = doc.esearch == text ? 0 : 1;
                        //    return prefx + doc.esearch.toLowerCase();
                        //});
-                      
+
                        cb(docs);
                    }
                } else {
-                   
+
                    cb(docs);
                }
 
