@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title></title>
+
+
+    <link href="css/family.css" rel="stylesheet" />
+    <link href="lib/jquery.mobile/jquery.mobile-1.4.5.min.css" rel="stylesheet" />
+    <link href="css/jqm-demos.css" rel="stylesheet" />
+
+    <script src="lib/underscore/underscore-min.js"></script>
+    <script src="lib/jquery/jquery-2.1.1.min.js"></script>
+    <script src="lib/backbone/backbone-min.js"></script>
+    <script src="lib/async/async.min.js"></script>
+
+    <script src="lib/jquery.mobile/jquery.mobile-1.4.5.js"></script>
+
+     <script src="lib/xdr.js"></script>
+    <script src="lib/socket.io-1.2.1.js"></script>
+    <script src="lib/step/step.js"></script>
+
+    
+    <script src="NwLib/NwLib.js"></script>
+    <script src="NwUtil/NwDataMsgObj.js"></script>
+
+    <script src="NwConn/NwWsClient.js"></script>
+    <script src="service_conn/NwStockServiceConn.js"></script>
+
+    <script src="word/WordEachView.js"></script>
+    <script src="word/WordView.js"></script>
+    <script src="word/WordModel.js"></script>
+    <script src="word/WordCollection.js"></script>
+
+    <script src="index.js"></script>
+
+</head>
+<body>
+
+    <div data-role="page" data-title="NwDict" class="jqm-demos ui-responsive-panel">
+        <div data-role="header" data-position="fixed" data-theme="a">
+            <!-- <a href="../toolbar/" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>-->
+
+            <h1>NwDict</h1>
+
+            <a href="#search-panel" data-icon="search" data-iconpos="notext">Menu</a>
+            <a id="seting" href="#add-form" data-icon="gear" data-iconpos="notext">Add</a>
+            <!--  <form> 
+            <label for="searchbar" class="ui-hidden-accessible">Search:</label>
+            <input type="search" name="searchbar" id="search1" value="" data-theme="d" data-mini="true" />
+        </form>-->
+
+        </div>
+        <!-- /header -->
+        <div role="main" id="main" class="ui-content jqm-content jqm-fullwidth">
+            <!--   <div data-word="" class="tempWord jqm-content">
+                <h2>word</h2>
+                <div>meaning</div>
+                <br />
+                <br />
+            </div>-->
+
+          <!--  <div class="WordEachView jqm-content">
+                <h2>something <span style="color: rgb(215, 151, 0); font-size: 18px;">{                                                                                                   
+                <span class="ipa color_h2" style="color: rgb(138, 192, 7); font-size: 18px;">eng</span>
+                    ,
+                <span class="ipa color_h3" style="color: rgb(255, 106, 0); font-size: 18px;">thai</span>
+                    }               
+                </span></h2>
+
+                <div class="cont" style="font-size: 17px;">some thing</div>
+                <br />
+                <br />
+            </div>-->
+
+            <script type="text/template" id="WordTemplate">
+            <h2><%- esearch %> <span style="color: rgb(215, 151, 0); font-size: 18px;">{                                                                                                   
+                <span class="ipa color_h2" style="color: rgb(138, 192, 7); font-size: 18px;"><%- pros %></span>
+                ,
+                <span class="ipa color_h3" style="color: rgb(255, 106, 0); font-size: 18px;"><%- proThs %></span>
+                }               
+            </span></h2>
+
+            <div class="cont" style="font-size: 17px;"></div>
+            <br />
+            <br />
+            </script>
+        </div>
+        <!-- /content -->
+        <div data-role="panel" data-display="push" data-theme="b" id="search-panel">
+
+            <ul data-role="listview">
+                <li>
+                    <input type="search" data-theme="a" name="searchbar" id="search" data-mini="true" value="" placeholder="search" data-inline="true">
+                </li>
+                <li id="searchWordTemp"><a href="#" class="searchWord">word</a></li>
+
+            </ul>
+
+        </div>
+        <!-- /panel -->
+
+    </div>
+    <!-- /page -->
+</body>
+</html>
