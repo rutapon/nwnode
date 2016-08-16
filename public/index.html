@@ -30,11 +30,13 @@
     <script src="NwConn/NwWsClient.js"></script>
     <script src="service_conn/NwStockServiceConn.js"></script>
 
+    <script src="NwLogWords/logWords.js"></script>
+    
     <script src="word/WordEachView.js"></script>
     <script src="word/WordView.js"></script>
     <script src="word/WordModel.js"></script>
     <script src="word/WordCollection.js"></script>
-    
+
 
     <script src="index.js"></script>
 
@@ -46,7 +48,6 @@
             <!-- <a href="../toolbar/" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>-->
 
             <h1>NwDict</h1>
-
             <a href="#search-panel" data-icon="search" data-iconpos="notext">Menu</a>
             <a id="seting" href="#add-form" data-icon="gear" data-iconpos="notext">Add</a>
             <!--  <form> 
@@ -57,14 +58,15 @@
         </div>
         <!-- /header -->
         <div role="main" id="main" class="ui-content jqm-content jqm-fullwidth">
-            <!--   <div data-word="" class="tempWord jqm-content">
+
+            <!--<div data-word="" class="tempword jqm-content">
                 <h2>word</h2>
                 <div>meaning</div>
                 <br />
                 <br />
-            </div>-->
+            </div>
 
-            <!--  <div class="WordEachView jqm-content">
+            <div class="wordeachview jqm-content">
                 <h2>something <span style="color: rgb(215, 151, 0); font-size: 18px;">{                                                                                                   
                 <span class="ipa color_h2" style="color: rgb(138, 192, 7); font-size: 18px;">eng</span>
                     ,
