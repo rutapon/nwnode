@@ -37,7 +37,7 @@ $(function () {
             //"esyn": "experiment, tax, try"
         },
         "proTh": "นิวดิค'",
-        "pro": ["njudɪk"],
+        "pro": ["njuːdɪk"],
 
     };
 
