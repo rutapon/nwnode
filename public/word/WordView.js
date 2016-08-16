@@ -14,7 +14,7 @@ var app = app || { models: {}, collections: {}, views: {} };
             // Instead of generating a new element, bind to the existing skeleton of
             // the App already present in the HTML.
             el: '#main',
-
+            seharchTimeOut: null,
             // Delegated events for creating new items, and clearing completed ones.
             events: {
 
@@ -87,10 +87,16 @@ var app = app || { models: {}, collections: {}, views: {} };
                     if (e.keyCode != 13) {
 
                         //serchDely(200);
-                        var val = $('#search').val();
-                        self.searchWord(val, function (searchWordArray) {
-                            self.addSearchWord(searchWordArray);
-                        });
+                        var val = $('#search').val().trim();
+                        if (val.length > 2) {
+                            clearTimeout(self.seharchTimeOut);
+                            self.seharchTimeOut = setTimeout(function () {
+
+                                self.searchWord(val, function (searchWordArray) {
+                                    self.addSearchWord(searchWordArray);
+                                });
+                            }, 300);
+                        }
                     }
                 });
 
@@ -183,8 +189,8 @@ var app = app || { models: {}, collections: {}, views: {} };
 
                     } else {
                         self.collection.findWord(val, function (docs) {
-                          
-                            
+
+
                             if (_.isArray(docs) && docs.length > 0) {
                                 //addWord(val, docs);
                                 _.each(docs, function (doc) {
