@@ -108,7 +108,7 @@ var app = app || { models: {}, collections: {}, views: {} };
                                 self.searchWord(val, function (searchWordArray) {
                                     self.addSearchWord(searchWordArray);
                                 });
-                            }, 200);
+                            }, 250);
                         }
                     }
                 });
