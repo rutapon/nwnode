@@ -23,6 +23,10 @@ var code = 'var r=b[n>>>2]>>>24-8*(n%4)&255;';
 
 var db = new loki('test', { env: 'BROWSER' });
 var words = db.addCollection('datas');
+//var words = db.addCollection('datas', {
+//    indices: ['esearch']
+//});
+
 words.ensureIndex('esearch', true);
 
 self.addEventListener('message', function (e) {
@@ -51,25 +55,25 @@ self.addEventListener('message', function (e) {
         //});
 
     }
-    //else if (e.data.msg == 'insertDb') {
-    //    //var serializedDbencrypted = e.data.data;
-    //    dbstring = NwSS.SS.dct(e.data.data, code).toString(NwSS.enc.Utf8);
-    //    db.loadDatabase();
-    //    words = db.getCollection('datas');
-    //    self.postMessage();
-    //}
-    //else if (e.data.msg == 'insertWords') {
+        //else if (e.data.msg == 'insertDb') {
+        //    //var serializedDbencrypted = e.data.data;
+        //    dbstring = NwSS.SS.dct(e.data.data, code).toString(NwSS.enc.Utf8);
+        //    db.loadDatabase();
+        //    words = db.getCollection('datas');
+        //    self.postMessage();
+        //}
+        //else if (e.data.msg == 'insertWords') {
 
-    //    var data = _.map(e.data.data, function (word) {
-    //        return { esearch: word };
-    //    });
+        //    var data = _.map(e.data.data, function (word) {
+        //        return { esearch: word };
+        //    });
 
-    //    words.insert(data);
-    //    e.data.num = words.count(null);
-    //    //e.data.obj = obj;
-    //    self.postMessage(e.data);
+        //    words.insert(data);
+        //    e.data.num = words.count(null);
+        //    //e.data.obj = obj;
+        //    self.postMessage(e.data);
 
-    //}
+        //}
     else if (e.data.msg == 'findWord') {
         var text = e.data.data;
         var reg = new RegExp('^' + text, 'i');
@@ -77,8 +81,8 @@ self.addEventListener('message', function (e) {
 
         var docs = words.chain()
               .find(query)
+              .simplesort("esearch")
               .limit(15)
-              //.simplesort("esearch")
               .data()
 
         if (docs.length != 0) {
@@ -99,10 +103,10 @@ self.addEventListener('message', function (e) {
                 docs.unshift(foundWord);
             }
 
-            docs = _.sortBy(docs, function (doc) {
-                //var prefx = doc.esearch == text ? 0 : 1;
-                return doc.esearch.toLocaleLowerCase();
-            });
+            //docs = _.sortBy(docs, function (doc) {
+            //    //var prefx = doc.esearch == text ? 0 : 1;
+            //    return doc.esearch.toLocaleLowerCase();
+            //});
         }
 
         e.data.data = docs;// JSON.stringify(obj);

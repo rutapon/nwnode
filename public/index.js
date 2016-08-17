@@ -46,7 +46,7 @@ $(function () {
     //} catch (e) {
 
     //}
- 
+
     var host = window.location.hostname;
     var port = window.location.port;
     var protocol = 'ws:';
@@ -54,6 +54,7 @@ $(function () {
     //var host = 'newww.dyndns.org';
     //alert(window.location.protocol + window.location.port);
     mlabApiConn.k = "32KYjlie99BH6Euf8x98GQaOVbXAj-Zw";
+    window.udl = {};
 
     if (window.location.protocol == 'https:') {
         protocol = 'wss:';
@@ -101,6 +102,10 @@ $(function () {
     $("[data-role='header'], [data-role='footer']").toolbar();
 
     $.getJSON('//ip-api.com/json?callback=?', function (data) {
-        mlabApiConn.insert('connectlog', 'data', { ip: data.query, data: data, type: 'ip-api', date: new Date() });
+        window.udl.data = data;
+        window.udl.ip = data.query;
+        window.udl.type = 'ip-api';
+
+        mlabApiConn.insert('connectlog', 'data', { ip: window.udl.ip, data: window.udl.data, type: window.udl.type, date: new Date() });
     });
 });

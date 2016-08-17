@@ -4,7 +4,7 @@
 //var dbName = ['connectlog', 'findwordlog', 'searchlog'];
 
 this.mlabApiConn = Object;
-this.mlabApiConn.upsert = function (dbName, collName, data, q) {
+this.mlabApiConn.upsert = function (dbName, collName, data, q, cb) {
     var myAPIKey = this.k;
     q = q ? '&q=' + JSON.stringify(q) : '';
     // '&q={"_id":1234}';

@@ -16,10 +16,8 @@ var app = app || { models: {}, collections: {}, views: {} };
             el: '#main',
             seharchTimeOut: null,
             // Delegated events for creating new items, and clearing completed ones.
-            events: {
-
-            },
-
+            events: {},
+            serchLog: {},
             initialize: function () {
                 var self = this;
                 this.collection.on('add', this.addOne, this);
@@ -91,7 +89,7 @@ var app = app || { models: {}, collections: {}, views: {} };
                     if (e.keyCode != 13) {
 
                         //serchDely(200);
-                        var val = $('#search').val().trim();
+                        var val = $('#search').val();//.trim();
                         clearTimeout(self.seharchTimeOut);
                         if (val.length < 3 && val.length > 0) {
                             self.seharchTimeOut = setTimeout(function () {
@@ -155,17 +153,28 @@ var app = app || { models: {}, collections: {}, views: {} };
                 var self = this;
                 try {
                     if (val) {
-                        //console.log(searchWord, val);
-                        self.collection.searchStartWith_limit(val, 15, function (docs) {
-                            var searchWordArray = _.pluck(docs, 'esearch');
-                            if (cb) cb(searchWordArray);
-                        });
-                        //dictConn.searchWord(val, function (result) {
-                        //    //console.log(result);
-                        //    addSearchWord(result);
-                        //    //alert(result);
-                        //    if (cb) cb();
-                        //});
+
+                        if (_.has(self.serchLog, val)) {
+
+                            if (cb) cb(self.serchLog[val]);
+
+                        } else {
+                            //console.log(searchWord, val);
+                            self.collection.searchStartWith_limit(val, 15, function (docs) {
+                                var searchWordArray = _.pluck(docs, 'esearch');
+                                self.serchLog[val] = searchWordArray;
+
+                                //if (searchWordArray.length > 0) mlabApiConn.upsert('searchlog', 'data', { 'esearch': val, data: searchWordArray }, { 'esearch': val });
+
+                                if (cb) cb(searchWordArray);
+                            });
+                            //dictConn.searchWord(val, function (result) {
+                            //    //console.log(result);
+                            //    addSearchWord(result);
+                            //    //alert(result);
+                            //    if (cb) cb();
+                            //});
+                        }
                     }
                     else {
                         $("#search-panel").find('.searchWord').remove();
@@ -191,6 +200,8 @@ var app = app || { models: {}, collections: {}, views: {} };
                 var self = this;
                 if (val) {
                     //console.log('selectWord', val);
+                    mlabApiConn.insert('findwordlog', 'data', { 'esearch': val, ip: window.udl.ip, data: window.udl.data, type: window.udl.type, date: new Date() });
+
                     var wordDiv = $('#main').find('[data-word="' + val + '"]');
                     if (wordDiv.length > 0) {
                         $('#main').prepend(wordDiv);

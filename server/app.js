@@ -115,9 +115,9 @@
 
                 console.log('setOnConnectEventListener ' + id, ip);
 
-                var logObj = { date: new Date(), id: id, ip: ip };
+                //var logObj = { date: new Date(), id: id, ip: ip };
 
-                logDb.insert('connectLog', logObj);
+                //logDb.insert('connectLog', logObj);
 
                 //if (self._onConnectEventListener) {
                 //    self._onConnectEventListener(new NwSocket(socket, 'passive'));
@@ -137,17 +137,17 @@
             });
 
             wsServer.setOnMessageEventListener(function (socket, msgObj, fn) {
-                var ip = socket.handshake.address;
-                var id = socket.id;
+                //var ip = socket.handshake.address;
+                //var id = socket.id;
 
                 // console.log('setOnMessageEventListener ' + JSON.stringify(msgObj));
-                if (msgObj.msg == "findWord") {
-                    var logObj = { date: new Date(), id: id, ip: ip, data: msgObj.data.esearch };
-                    logDb.insert('findWordLog', logObj);
-                } else {
-                    var logObj = { date: new Date(), id: id, ip: ip, type: msgObj.msg, data: msgObj.data };
-                    logDb.insert('msgdLog', logObj);
-                }
+                //if (msgObj.msg == "findWord") {
+                //    var logObj = { date: new Date(), id: id, ip: ip, data: msgObj.data.esearch };
+                //    logDb.insert('findWordLog', logObj);
+                //} else {
+                //    var logObj = { date: new Date(), id: id, ip: ip, type: msgObj.msg, data: msgObj.data };
+                //    logDb.insert('msgdLog', logObj);
+                //}
                 //if (self._onMessageEventListener) {
                 //    try {
                 //        self._onMessageEventListener(new NwSocket(socket, 'passive'), msgObj, fn);
