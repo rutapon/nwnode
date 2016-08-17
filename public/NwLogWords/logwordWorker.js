@@ -2,8 +2,11 @@
 /// <reference path="../lib/lokijs/lokijs.js" />
 
 
-importScripts('/lib/underscore/underscore-min.js');
-importScripts('/lib/lokijs/lokijs.min.js');
+//importScripts('/lib/underscore/underscore-min.js');
+//importScripts('/lib/lokijs/lokijs.min.js');
+
+importScripts('https://cdnjs.cloudflare.com/ajax/libs/lokijs/1.4.1/lokijs.min.js');
+importScripts('https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js');
 
 var db = new loki('test', { env: 'BROWSER' });
 var words = db.addCollection('datas');
