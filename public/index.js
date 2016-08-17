@@ -46,13 +46,14 @@ $(function () {
     //} catch (e) {
 
     //}
-
+ 
     var host = window.location.hostname;
     var port = window.location.port;
     var protocol = 'ws:';
     //var host = 'localhost';
     //var host = 'newww.dyndns.org';
     //alert(window.location.protocol + window.location.port);
+    mlabApiConn.k = "32KYjlie99BH6Euf8x98GQaOVbXAj-Zw";
 
     if (window.location.protocol == 'https:') {
         protocol = 'wss:';
@@ -99,5 +100,7 @@ $(function () {
     $("[data-role='navbar']").navbar();
     $("[data-role='header'], [data-role='footer']").toolbar();
 
-
+    $.getJSON('//ip-api.com/json?callback=?', function (data) {
+        mlabApiConn.insert('connectlog', 'data', { ip: data.query, data: data, type: 'ip-api', date: new Date() });
+    });
 });
