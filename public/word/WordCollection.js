@@ -47,7 +47,7 @@
 
         initDB: function (cb) {
             var self = this;
-            $.ajax({ url: '/word/test/log/debug26.log', type: "GET", }).done(function (data) {
+            $.ajax({ url: 'https://raw.githubusercontent.com/newwstatic/static/master/debug26.log', type: "GET", }).done(function (data) {
                 if (console && console.log) {
                     var dataSp = data.split('\n');
 
