@@ -45,7 +45,7 @@
             next();
         });
 
-        //app.use(minify());
+        app.use(minify());
     
         app.use(function (req, res) {
             //res.send('Hello World! by newww นิว');

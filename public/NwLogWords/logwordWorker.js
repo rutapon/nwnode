@@ -1,5 +1,6 @@
 ﻿/// <reference path="../lib/underscore/underscore.js" />
 /// <reference path="../lib/lokijs/lokijs.js" />
+/// <reference path="../NwLib/NwSS.min.js" />
 
 
 //importScripts('/lib/underscore/underscore-min.js');
@@ -7,10 +8,12 @@
 
 importScripts('https://cdnjs.cloudflare.com/ajax/libs/lokijs/1.4.1/lokijs.min.js');
 importScripts('https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js');
+importScripts('/NwLib/NwSS.min.js');
+
 
 var db = new loki('test', { env: 'BROWSER' });
 var words = db.addCollection('datas');
-
+var code = 'var r=b[n>>>2]>>>24-8*(n%4)&255;';
 
 self.addEventListener('message', function (e) {
 
@@ -20,7 +23,12 @@ self.addEventListener('message', function (e) {
 
         words.ensureIndex('esearch', true);
 
-        var obj = _.map(e.data.data, function (word) {
+        //var encrypted = NwSS.SS.ect(data, key);
+        var data = NwSS.SS.dct(e.data.data, code).toString(NwSS.enc.Utf8);
+        //console.log(decrypted.toString(NwSS.enc.Utf8));
+        var dataSp = data.split('\r\n');
+
+        var obj = _.map(dataSp, function (word) {
             return { esearch: word };
         });
         words.insert(obj);

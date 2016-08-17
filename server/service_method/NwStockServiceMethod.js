@@ -154,7 +154,7 @@
 
         },
         findWord: function (data, cb) {
-            console.log('findWord', data);
+            //console.log('findWord', data);
             var esearch = data.esearch;
             this.dbConn.findOne(this.colName, { esearch: esearch }, function (doc) {
                 //console.log('findWord', data,doc);

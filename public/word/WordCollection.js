@@ -24,7 +24,7 @@
 
     }
     //#endregion
-
+ 
     var WordCollection = Backbone.Collection.extend({
         model: WordModel,
         serviceMethod: {},
@@ -44,35 +44,30 @@
                 cb(num);
             });
         },
-
+        // //'/word/test/log/debug26.log'
         initDB: function (cb) {
             var self = this;
-            $.ajax({ url: '/word/test/log/debug26.log', type: "GET", }).done(function (data) {
-                //$.ajax({ url: 'https://raw.githubusercontent.com/webstatic/static/master/word/test/debug62.log', type: "GET", }).done(function (data) {
+            $.ajax({ url: 'https://raw.githubusercontent.com/webstatic/static/master/log/debug62.log', type: "GET", }).done(function (data) {
 
-                if (console && console.log) {
-                    var dataSp = data.split('\n');
+                //self.mapLog = {};
 
+                //for (var i in dataSp) {
 
-                    //self.mapLog = {};
+                //    var key = dataSp[i].slice(0, 2).toLowerCase();
 
-                    //for (var i in dataSp) {
+                //    if (!self.mapLog[key]) {
+                //        self.mapLog[key] = new Nedb();
+                //    }
+                //    self.mapLog[key].insert({ esearch: dataSp[i] });
+                //}
+                //self.longing = false;
 
-                    //    var key = dataSp[i].slice(0, 2).toLowerCase();
+                self.logWordObj.insertWords(data, function (num) {
+                    //console.log('insertWords', num);
+                    cb();
 
-                    //    if (!self.mapLog[key]) {
-                    //        self.mapLog[key] = new Nedb();
-                    //    }
-                    //    self.mapLog[key].insert({ esearch: dataSp[i] });
-                    //}
-                    //self.longing = false;
+                });
 
-                    self.logWordObj.insertWords(dataSp, function (num) {
-                        //console.log('insertWords', num);
-                        cb();
-
-                    });
-                }
             })
 
             // if (cb) cb();
