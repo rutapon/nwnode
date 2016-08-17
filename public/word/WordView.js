@@ -48,7 +48,7 @@ var app = app || { models: {}, collections: {}, views: {} };
 
                 $(document).keydown(function (e) {
 
-                    if ( e.ctrlKey) {
+                    if (e.ctrlKey) {
                         return;
                     }
 
@@ -92,23 +92,19 @@ var app = app || { models: {}, collections: {}, views: {} };
 
                         //serchDely(200);
                         var val = $('#search').val().trim();
+                        clearTimeout(self.seharchTimeOut);
                         if (val.length > 2) {
-                            clearTimeout(self.seharchTimeOut);
-                            self.seharchTimeOut = setTimeout(function () {
-                                clearTimeout(self.seharchTimeOut);
-
-                                self.searchWord(val, function (searchWordArray) {
-                                    self.addSearchWord(searchWordArray);
-                                });
-                            }, 100);
+                            //self.seharchTimeOut = setTimeout(function () {
+                            self.searchWord(val, function (searchWordArray) {
+                                self.addSearchWord(searchWordArray);
+                            });
+                            //}, 100);
                         } else {
-                            clearTimeout(self.seharchTimeOut);
                             self.seharchTimeOut = setTimeout(function () {
-
                                 self.searchWord(val, function (searchWordArray) {
                                     self.addSearchWord(searchWordArray);
                                 });
-                            }, 250);
+                            }, 300);
                         }
                     }
                 });
@@ -202,11 +198,11 @@ var app = app || { models: {}, collections: {}, views: {} };
 
                     } else {
                         self.collection.findWord(val, function (docs) {
-                         
+
                             if (_.isArray(docs) && docs.length > 0) {
                                 //addWord(val, docs);
                                 _.each(docs, function (doc) {
-                                
+
                                     self.collection.add(doc);
                                 });
 
