@@ -93,18 +93,18 @@ var app = app || { models: {}, collections: {}, views: {} };
                         //serchDely(200);
                         var val = $('#search').val().trim();
                         clearTimeout(self.seharchTimeOut);
-                        if (val.length > 2) {
-                            //self.seharchTimeOut = setTimeout(function () {
-                            self.searchWord(val, function (searchWordArray) {
-                                self.addSearchWord(searchWordArray);
-                            });
-                            //}, 100);
-                        } else {
+                        if (val.length < 3 && val.length > 0) {
                             self.seharchTimeOut = setTimeout(function () {
                                 self.searchWord(val, function (searchWordArray) {
                                     self.addSearchWord(searchWordArray);
                                 });
                             }, 300);
+                        } else {
+                            //self.seharchTimeOut = setTimeout(function () {
+                            self.searchWord(val, function (searchWordArray) {
+                                self.addSearchWord(searchWordArray);
+                            });
+                            //}, 100);
                         }
                     }
                 });

@@ -24,7 +24,7 @@
 
     }
     //#endregion
- 
+
     var WordCollection = Backbone.Collection.extend({
         model: WordModel,
         serviceMethod: {},
@@ -47,30 +47,22 @@
         // //'/word/test/log/debug26.log'
         initDB: function (cb) {
             var self = this;
-            $.ajax({ url: 'https://raw.githubusercontent.com/webstatic/static/master/log/debug62.log', type: "GET", }).done(function (data) {
+            var data = localStorage.getItem('debugLog');
 
-                //self.mapLog = {};
-
-                //for (var i in dataSp) {
-
-                //    var key = dataSp[i].slice(0, 2).toLowerCase();
-
-                //    if (!self.mapLog[key]) {
-                //        self.mapLog[key] = new Nedb();
-                //    }
-                //    self.mapLog[key].insert({ esearch: dataSp[i] });
-                //}
-                //self.longing = false;
-
-                self.logWordObj.insertWords(data, function (num) {
-                    //console.log('insertWords', num);
-                    cb();
-
+            if (!data) {
+                $.ajax({ url: 'https://raw.githubusercontent.com/webstatic/static/master/log/debug62.log', type: "GET", }).done(function (data) {
+                    localStorage.setItem('debugLog', data);
+                    //self.longing = false;
+                    self.logWordObj.insertWordsRow(data, function (data) {
+                        if (cb) cb();
+                    });
                 });
+            } else {
+                self.logWordObj.insertWordsRow(data, function () {
+                    if (cb) cb();
+                });
+            }
 
-            })
-
-            // if (cb) cb();
         },
         searchStartWith: function (text, cb) {
             var query = { esearch: new RegExp('^' + text) };

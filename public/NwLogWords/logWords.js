@@ -23,15 +23,24 @@
 
         }, false);
 
-        this.insertWords = function (words, cb) {
-            worker.postMessage({ msg: 'insertWords', data: words }); // Send data to our worker.             
-            callBackObj.insertWords = cb;
+        this.insertWordsRow = function (word, cb) {
+            worker.postMessage({ msg: 'insertWordsRow', data: word }); // Send data to our worker.
+            callBackObj.insertWordsRow = cb;
         };
+        //this.insertDb = function (word, cb) {
+        //    worker.postMessage({ msg: 'insertDb', data: word }); // Send data to our worker.
+        //    callBackObj.insertWordsRow = cb;
+        //};
+        //this.insertWords = function (words, cb) {
+        //    worker.postMessage({ msg: 'insertWords', data: words }); // Send data to our worker.             
+        //    callBackObj.insertWords = cb;
+        //};
         this.findWord = function (word, cb) {
             worker.postMessage({ msg: 'findWord', data: word }); // Send data to our worker.
             callBackObj.findWord = cb;
         };
 
+     
     }
 
     context.logWords = logWords;

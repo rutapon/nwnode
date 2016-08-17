@@ -71,14 +71,14 @@
 
     //};
 
-    var NwDatabaseServiceMethodClass = Class({
+    var NwStockServiceMethod = Class({
 
-        constructor: function (dbPath) {
-            this.dbPath = dbPath;
+        constructor: function (cb) {
+            //this.dbPath = dbPath;
             this.colName = 'nwDic';
 
             this.dbConn = new NwDbConnection('mongodb://newww:123456@ds161505.mlab.com:61505/nwdict', function () {
-
+                if (cb) cb();
             });
 
         },
@@ -102,17 +102,17 @@
             var esearch = data.esearch;
 
             this.dbConn.searchStartWith(this.colName, { esearch: esearch }, limit, function (docs) {
-              
+
                 if (docs.length > 0 && !_.findWhere(docs, { esearch: esearch })) {
 
                     self.dbConn.findOne(self.colName, { esearch: esearch }, function (doc) {
-                     
+
                         if (doc) {
                             docs.push(doc);
                         }
 
                         docs = _.sortBy(docs, function (doc) {
-                        
+
                             var prefx = doc.esearch == esearch ? 0 : 1;
                             return prefx + doc.esearch.toLowerCase();
                         });
@@ -141,7 +141,7 @@
 
                 //    return obj.esearch.toLowerCase();
                 //});
-                
+
             });
         },
         searchContain: function (data, cb) {
@@ -165,10 +165,10 @@
 
 
     if (typeof module !== "undefined" && module.exports) {                       // NodeJS/CommonJS
-        module.exports = new NwDatabaseServiceMethodClass();
+        module.exports = NwStockServiceMethod;
     } else {
 
-        context.NwDatabaseServiceMethod = new NwDatabaseServiceMethodClass();
+        context.NwStockServiceMethod = NwStockServiceMethod;
     }
 
 })(this);

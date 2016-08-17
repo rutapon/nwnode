@@ -7,21 +7,29 @@
 //importScripts('/lib/lokijs/lokijs.min.js');
 
 importScripts('https://cdnjs.cloudflare.com/ajax/libs/lokijs/1.4.1/lokijs.min.js');
+//importScripts('https://cdnjs.cloudflare.com/ajax/libs/lokijs/1.4.1/loki-indexed-adapter.min.js');
+
 importScripts('https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js');
 importScripts('/NwLib/NwSS.min.js');
 
+var code = 'var r=b[n>>>2]>>>24-8*(n%4)&255;';
+
+
+//var idbAdapter = Object;
+//var dbstring;
+//idbAdapter.prototype.loadDatabase = function (dbname, callback) { callback(dbstring); }
+//idbAdapter.prototype.saveDatabase = function (dbname, dbstring, callback) { callback(dbstring, dbname); }
+//var db = new loki('test', { env: 'BROWSER', adapter: new idbAdapter() });
 
 var db = new loki('test', { env: 'BROWSER' });
 var words = db.addCollection('datas');
-var code = 'var r=b[n>>>2]>>>24-8*(n%4)&255;';
+words.ensureIndex('esearch', true);
 
 self.addEventListener('message', function (e) {
 
     //var db = new Nedb();
 
-    if (e.data.msg == 'insertWords') {
-
-        words.ensureIndex('esearch', true);
+    if (e.data.msg == 'insertWordsRow') {
 
         //var encrypted = NwSS.SS.ect(data, key);
         var data = NwSS.SS.dct(e.data.data, code).toString(NwSS.enc.Utf8);
@@ -32,12 +40,37 @@ self.addEventListener('message', function (e) {
             return { esearch: word };
         });
         words.insert(obj);
-
-        e.data.data = words.count(null);
-
+        //e.data.data = {};
         self.postMessage(e.data);
-        
-    } else if (e.data.msg == 'findWord') {
+        //db.saveDatabase(function (serializedDb) {
+        //    var serializedDbencrypted = NwSS.SS.ect(serializedDb, code);
+        //    e.data.data.obj = serializedDbencrypted.toString();
+        //    //e.data.data.num = words.count(null);
+
+        //    self.postMessage(e.data);
+        //});
+
+    }
+    //else if (e.data.msg == 'insertDb') {
+    //    //var serializedDbencrypted = e.data.data;
+    //    dbstring = NwSS.SS.dct(e.data.data, code).toString(NwSS.enc.Utf8);
+    //    db.loadDatabase();
+    //    words = db.getCollection('datas');
+    //    self.postMessage();
+    //}
+    //else if (e.data.msg == 'insertWords') {
+
+    //    var data = _.map(e.data.data, function (word) {
+    //        return { esearch: word };
+    //    });
+
+    //    words.insert(data);
+    //    e.data.num = words.count(null);
+    //    //e.data.obj = obj;
+    //    self.postMessage(e.data);
+
+    //}
+    else if (e.data.msg == 'findWord') {
         var text = e.data.data;
         var reg = new RegExp('^' + text, 'i');
         var query = { esearch: { $regex: reg } };
@@ -45,7 +78,7 @@ self.addEventListener('message', function (e) {
         var docs = words.chain()
               .find(query)
               .limit(15)
-              .simplesort("esearch")
+              //.simplesort("esearch")
               .data()
 
         if (docs.length != 0) {
@@ -66,16 +99,16 @@ self.addEventListener('message', function (e) {
                 docs.unshift(foundWord);
             }
 
-            //docs = _.sortBy(docs, function (doc) {
-            //    //var prefx = doc.esearch == text ? 0 : 1;
-            //    return doc.esearch.toLowerCase();
-            //});
+            docs = _.sortBy(docs, function (doc) {
+                //var prefx = doc.esearch == text ? 0 : 1;
+                return doc.esearch.toLocaleLowerCase();
+            });
         }
 
         e.data.data = docs;// JSON.stringify(obj);
         self.postMessage(e.data);
     }
 
-   
-   
+
+
 }, false);

@@ -40,6 +40,7 @@
             initDB: function (cb) {
                 var self = this;
                 MongoClient.connect(this.dbPath, function (err, dbConn) {
+                    if (err) console.log(err);
                     self.dbConn = dbConn;
                     if (cb) cb(self);
                 });
@@ -158,8 +159,6 @@
                     });
 
             },
-
-
 
             insert: function (tableName, insertObj, callback) {
                 var db = this._getDB(tableName);
