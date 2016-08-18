@@ -10,10 +10,7 @@ importScripts('https://cdnjs.cloudflare.com/ajax/libs/lokijs/1.4.1/lokijs.min.js
 //importScripts('https://cdnjs.cloudflare.com/ajax/libs/lokijs/1.4.1/loki-indexed-adapter.min.js');
 
 importScripts('https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js');
-importScripts('/NwLib/NwSS.min.js');
-
-var code = 'var r=b[n>>>2]>>>24-8*(n%4)&255;';
-
+importScripts('../NwLib/NwSS.min.js');
 
 //var idbAdapter = Object;
 //var dbstring;
@@ -36,6 +33,7 @@ self.addEventListener('message', function (e) {
     if (e.data.msg == 'insertWordsRow') {
 
         //var encrypted = NwSS.SS.ect(data, key);
+        var code = e.data.c;
         var data = NwSS.SS.dct(e.data.data, code).toString(NwSS.enc.Utf8);
         //console.log(decrypted.toString(NwSS.enc.Utf8));
         var dataSp = data.split('\r\n');

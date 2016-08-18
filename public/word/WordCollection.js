@@ -77,7 +77,6 @@
         },
         searchContain: function (text, cb) {
             var query = { esearch: new RegExp(text) };
-
         },
         searchContain_limit: function (text, limit, cb) {
             var query = { esearch: new RegExp(text) };

@@ -4,6 +4,7 @@
 //var dbName = ['connectlog', 'findwordlog', 'searchlog'];
 
 this.mlabApiConn = Object;
+
 this.mlabApiConn.upsert = function (dbName, collName, data, q, cb) {
     var myAPIKey = this.k;
     q = q ? '&q=' + JSON.stringify(q) : '';
@@ -26,5 +27,25 @@ this.mlabApiConn.insert = function (dbName, collName, data, cb) {
         contentType: "application/json"
     }).done(function (data) {
         if (cb) cb(data);
+    });
+}
+
+this.mlabApiConn.findOne = function (dbName, collName, q, cb) {
+    var myAPIKey = this.k;
+    var queryStr = '&q=' + JSON.stringify(q);
+
+    var getUrl = 'https://api.mlab.com/api/1/databases/' + dbName + '/collections/' + collName + '?apiKey=' + myAPIKey + '&fo=true' + queryStr;
+
+    $.getJSON(getUrl, function (data) {
+        cb(data);
+    });
+
+}
+this.mlabApiConn.count = function (dbName, collName, q, cb) {
+    var myAPIKey = this.k;
+    var queryStr = '&q=' + JSON.stringify(q);
+    var getUrl = 'https://api.mlab.com/api/1/databases/' + dbName + '/collections/' + collName + '?apiKey=' + myAPIKey + '&c=true' + queryStr;
+    $.getJSON(getUrl, function (data) {
+        cb(data);
     });
 }

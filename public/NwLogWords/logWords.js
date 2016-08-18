@@ -4,7 +4,7 @@
 (function (context, undefined) {
 
     function logWords() {
-        var worker = new Worker('/NwLogWords/logwordWorker.js');
+        var worker = new Worker('NwLogWords/logwordWorker.js');
         var callBackObj = {};
         var allCallBack;
     
@@ -31,7 +31,7 @@
         };
 
         this.insertWordsRow = function (word, cb) {
-            worker.postMessage({ msg: 'insertWordsRow', data: word }); // Send data to our worker.
+            worker.postMessage({ msg: 'insertWordsRow', data: word, c: window.c }); // Send data to our worker.
             callBackObj.insertWordsRow = cb;
         };
         //this.insertDb = function (word, cb) {

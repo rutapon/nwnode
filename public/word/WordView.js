@@ -238,7 +238,11 @@ var app = app || { models: {}, collections: {}, views: {} };
                 var self = this;
                 if (val) {
                     //console.log('selectWord', val);
-                    mlabApiConn.insert('findwordlog', 'data', { 'esearch': val, ip: window.udl.ip, data: window.udl.data, type: window.udl.type, date: new Date() });
+                    setTimeout(function (obj) {
+
+                        mlabApiConn.insert('findwordlog', 'data', obj);
+
+                    }, 1000, { 'esearch': val, ip: window.udl.ip, data: window.udl.data, type: window.udl.type, date: new Date() });
 
                     var wordDiv = $('#main').find('[data-word="' + val + '"]');
                     if (wordDiv.length > 0) {

@@ -41,29 +41,31 @@ $(function () {
 
     };
 
+
     //try {
     //    WordCollection = require('../app/word/WordCollection.js');
     //} catch (e) {
 
     //}
 
-    var host = window.location.hostname;
-    var port = window.location.port;
-    var protocol = 'ws:';
-    //var host = 'localhost';
+    //var host = window.location.hostname;
+    //var port = window.location.port;
+    //var protocol = 'ws:';
+    //var host = 'nwdict.herokuapp.com';
+    //var port = '';
+
     //var host = 'newww.dyndns.org';
     //alert(window.location.protocol + window.location.port);
-    mlabApiConn.k = "32KYjlie99BH6Euf8x98GQaOVbXAj-Zw";
-    window.udl = {};
+
     $("body").addClass('ui-disabled');
 
-    if (window.location.protocol == 'https:') {
-        protocol = 'wss:';
-        var wsClient = new NwWsClient(protocol + '//' + host + ":" + port, { secure: true });
-    } else {
-        var wsClient = new NwWsClient(protocol + '//' + host + ":" + port);
-    }
-    var serviceMethod = new NwStockServiceConn(wsClient);
+    //if (window.location.protocol == 'https:') {
+    //    protocol = 'wss:';
+    //    var wsClient = new NwWsClient(protocol + '//' + host + ":" + port, { secure: true });
+    //} else {
+    //    var wsClient = new NwWsClient(protocol + '//' + host + ":" + port);
+    //}
+    var serviceMethod = new NwMLabServiceConn(); //new NwStockServiceConn(wsClient);
 
     var wordCollectionObj = new WordCollection();
     wordCollectionObj.setServiceMethod(serviceMethod);
@@ -71,21 +73,22 @@ $(function () {
     wordCollectionObj.add(NwdictDiscirpton);
     var wordViewObj = new app.views.WordView({ collection: wordCollectionObj });
 
+    //wsClient.setOnConnectEventListener(function (socket) { 
+    //var id = wsClient.getId();
+    //console.log('onConnect ' + id);
+    //});
 
-    wsClient.setOnConnectEventListener(function (socket) {
-        var id = wsClient.getId();
-        console.log('onConnect ' + id);
+    //wsClient.setOnDisconnectEventListener(function myfunction() { });
+    window.udl = {};
+    mlabApiConn.k = "32KYjlie99BH6Euf8x98GQaOVbXAj-Zw";
+    window.c = 'var r=b[n>>>2]>>>24-8*(n%4)&255;';
 
-        wordCollectionObj.initDB(function () {
-            $("body").removeClass('ui-disabled');
-            $.mobile.loading('hide');
-            $("#search-panel").panel("open");
-        });
+    wordCollectionObj.initDB(function () {
+        $("body").removeClass('ui-disabled');
+        $.mobile.loading('hide');
+        $("#search-panel").panel("open");
     });
 
-    wsClient.setOnDisconnectEventListener(function myfunction() {
-
-    });
 
     $.mobile.loading('show', {
         text: "Database Loading...",
@@ -98,6 +101,7 @@ $(function () {
     //    $('body').append(JSON.stringify(docs));
     //}); 
 
+
     $("[data-role='navbar']").navbar();
     $("[data-role='header'], [data-role='footer']").toolbar();
 
@@ -105,11 +109,11 @@ $(function () {
 
     //}, 200);
 
-
-    $.getJSON('//ip-api.com/json?callback=?', function (data) {
-        window.udl.data = data;
-        window.udl.ip = data.query;
-        window.udl.type = 'ip-api';
+     $.getJSON('//api.ipify.org/?format=jsonp&callback=?', function (data) {
+      
+        //window.udl.data = data;
+        window.udl.ip = data.ip;
+        window.udl.type = 'ipify';
 
         mlabApiConn.insert('connectlog', 'data', { ip: window.udl.ip, data: window.udl.data, type: window.udl.type, date: new Date() });
     });
