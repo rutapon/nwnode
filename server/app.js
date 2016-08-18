@@ -72,20 +72,20 @@
 
     }
     async.waterfall([
-    function (callback) {
-        console.log('01 connect logDb');
-        var logDb = new NwDbConnection('mongodb://newww:123456@ds161495.mlab.com:61495/nwlog', function () {
-            callback(null, logDb);
-        });
+    //function (callback) {
+    //    console.log('01 connect logDb');
+    //    var logDb = new NwDbConnection('mongodb://newww:123456@ds161495.mlab.com:61495/nwlog', function () {
+    //        callback(null, logDb);
+    //    });
 
-    },
-    function (logDb, callback) {
+    //},
+    function ( callback) {
         console.log('02 connect dataDb');
         var NwStockServiceMethodObj = new NwStockServiceMethod(function () {
-            callback(null, logDb, NwStockServiceMethodObj);
+            callback(null, NwStockServiceMethodObj);
         });
     },
-    function (logDb, NwStockServiceMethodObj, callback) {
+    function (NwStockServiceMethodObj, callback) {
         console.log('03 init networkConn');
         NwServiceProcess.addServiceMethod(NwStockServiceMethodObj);
 
@@ -176,6 +176,7 @@
         }
 
         listenCommand(process.env.PORT || 8088);
+        callback(null);
     }
     ], function (err, result) {
         console.log('complete');
