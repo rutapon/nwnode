@@ -16,7 +16,7 @@
 //}
 
 $(function () {
-
+    //$('head').append('<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />');
     var NwdictDiscirpton = {
         "esearch": "NwDict",
         "lMn": [{ "tentry": "พจนานุกรม อังกฤษ-ไทย", "ecat": "N", "esyn": "English-Thai Dictionary" },
