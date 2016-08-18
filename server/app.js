@@ -46,7 +46,7 @@
             }
             next();
         });
-        app.use(minify());
+        //app.use(minify());
 
         var router = express.Router();
         router.get('/', function (req, res) {

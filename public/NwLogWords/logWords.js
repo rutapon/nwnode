@@ -6,7 +6,8 @@
     function logWords() {
         var worker = new Worker('/NwLogWords/logwordWorker.js');
         var callBackObj = {};
-
+        var allCallBack;
+    
         worker.addEventListener('message', function (e) {
             // console.log('Worker said: ', JSON.stringify(e.data));
 
@@ -21,7 +22,13 @@
 
             }
 
+            if (allCallBack) allCallBack(e.data.msg, e.data.data);
+
         }, false);
+
+        this.setAllCalBack = function (cb) {
+            allCallBack = cb;
+        };
 
         this.insertWordsRow = function (word, cb) {
             worker.postMessage({ msg: 'insertWordsRow', data: word }); // Send data to our worker.
@@ -35,12 +42,13 @@
         //    worker.postMessage({ msg: 'insertWords', data: words }); // Send data to our worker.             
         //    callBackObj.insertWords = cb;
         //};
-        this.findWord = function (word, cb) {
+
+        this.findWord = function (word, cb) {        
             worker.postMessage({ msg: 'findWord', data: word }); // Send data to our worker.
-            callBackObj.findWord = cb;
+            if (cb != undefined) callBackObj.findWord = cb;
         };
 
-     
+
     }
 
     context.logWords = logWords;

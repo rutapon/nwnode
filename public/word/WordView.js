@@ -18,10 +18,24 @@ var app = app || { models: {}, collections: {}, views: {} };
             // Delegated events for creating new items, and clearing completed ones.
             events: {},
             serchLog: {},
+            currentSearchList: [],
             initialize: function () {
                 var self = this;
                 this.collection.on('add', this.addOne, this);
                 this.collection.on('reset', this.render, this);
+
+                //this.collection.logWordObj.setAllCalBack(function (msg, data) {
+                //    if (msg == 'findWord') {
+                //        if (!_.has(self.serchLog, data.esearch)) {
+                //            var searchWordArray = _.pluck(data.docs, 'esearch');
+                //            self.serchLog[data.esearch] = searchWordArray;
+
+                //            if ($('#search').val() == data.esearch) {
+                //                self.addSearchWord(searchWordArray);
+                //            }
+                //        }
+                //    }
+                //});
 
                 $(document).on("swipeleft swiperight", "[data-role='page']", function (e) {
                     // We check if there is no open panel on the page because otherwise
@@ -63,8 +77,20 @@ var app = app || { models: {}, collections: {}, views: {} };
                     if (e.keyCode == 13) {
                         //var val = $('#search').val().trim();
                         var val = $(".searchWord").eq(0).text();
+                        var searchVal = $('#search').val().replace(/^\s+/, "");
 
-                        self.selectWord(val);
+                        if (searchVal != val && _.contains(self.currentSearchList, searchVal)) {
+                            self.selectWord(searchVal);
+                            self.currentSearchList = _.sortBy(self.currentSearchList, function (word) {
+                                //var prefx = doc.esearch == text ? 0 : 1;
+                                return word.tolocalelowercase();
+
+                                self.addSearchWord(self.currentSearchList);
+                            });
+                        } else {
+                            self.selectWord(val);
+                        }
+
                         $('#search').select();
                         var viewportWidth = $(window).width();
                         if (viewportWidth < 865) {
@@ -84,23 +110,34 @@ var app = app || { models: {}, collections: {}, views: {} };
                     //    }
                     //}
                 });
-
+                var seharchTimeOut;
                 $('#search').bind('keyup', function (e) {
                     if (e.keyCode != 13) {
 
                         //serchDely(200);
                         var val = $('#search').val();//.trim();
-                        clearTimeout(self.seharchTimeOut);
-                        if (val.length < 3 && val.length > 0) {
-                            self.seharchTimeOut = setTimeout(function () {
-                                self.searchWord(val, function (searchWordArray) {
-                                    self.addSearchWord(searchWordArray);
-                                });
-                            }, 300);
-                        } else {
+                        //self. = val;
+                        clearTimeout(seharchTimeOut);
+                        //if (val.length < 3 && val.length > 0) {
+                        //    seharchTimeOut = setTimeout(function () {
+                        //        self.searchWord(val, function (searchWordArray, nowVal) {
+                        //            if (self.currentSeharch == nowVal) {
+                        //                self.addSearchWord(searchWordArray);
+                        //            }
+                        //        });
+                        //    }, 200);
+                        //} else
+                        {
                             //self.seharchTimeOut = setTimeout(function () {
-                            self.searchWord(val, function (searchWordArray) {
+                            self.searchWord(val, function (searchWordArray, nowVal) {
                                 self.addSearchWord(searchWordArray);
+                                var currentSeharch = $('#search').val();
+                                if (currentSeharch == nowVal) {
+                                    self.addSearchWord(searchWordArray);
+                                }
+                                else if (_.has(self.serchLog, currentSeharch)) {
+                                    self.addSearchWord(self.serchLog[self.currentSeharch]);
+                                }
                             });
                             //}, 100);
                         }
@@ -154,27 +191,28 @@ var app = app || { models: {}, collections: {}, views: {} };
                 try {
                     if (val) {
 
-                        if (_.has(self.serchLog, val)) {
+                        //if (_.has(self.serchLog, val)) {
 
-                            if (cb) cb(self.serchLog[val]);
+                        //    if (cb) cb(self.serchLog[val]);
 
-                        } else {
-                            //console.log(searchWord, val);
-                            self.collection.searchStartWith_limit(val, 15, function (docs) {
-                                var searchWordArray = _.pluck(docs, 'esearch');
-                                self.serchLog[val] = searchWordArray;
+                        //} else {
+                        //console.log(searchWord, val);
+                        self.collection.searchStartWith_limit(val, 15, function (docs, esearch) {
 
-                                //if (searchWordArray.length > 0) mlabApiConn.upsert('searchlog', 'data', { 'esearch': val, data: searchWordArray }, { 'esearch': val });
 
-                                if (cb) cb(searchWordArray);
-                            });
-                            //dictConn.searchWord(val, function (result) {
-                            //    //console.log(result);
-                            //    addSearchWord(result);
-                            //    //alert(result);
-                            //    if (cb) cb();
-                            //});
-                        }
+                            var searchWordArray = _.pluck(docs, 'esearch');
+                            //self.serchLog[esearch] = searchWordArray;
+                            //if (searchWordArray.length > 0) mlabApiConn.upsert('searchlog', 'data', { 'esearch': val, data: searchWordArray }, { 'esearch': val });
+
+                            if (cb) cb(searchWordArray, esearch);
+                        });
+                        //dictConn.searchWord(val, function (result) {
+                        //    //console.log(result);
+                        //    addSearchWord(result);
+                        //    //alert(result);
+                        //    if (cb) cb();
+                        //});
+                        //}
                     }
                     else {
                         $("#search-panel").find('.searchWord').remove();
@@ -222,9 +260,7 @@ var app = app || { models: {}, collections: {}, views: {} };
                             }
                             if (cb) cb(val, docs);
                         });
-
                         //dictConn.getMeaningHtml(val, function (result) {
-
                         //});
                     }
 

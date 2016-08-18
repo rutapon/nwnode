@@ -108,8 +108,7 @@ self.addEventListener('message', function (e) {
             //    return doc.esearch.toLocaleLowerCase();
             //});
         }
-
-        e.data.data = docs;// JSON.stringify(obj);
+        e.data.data = { esearch: text, docs: docs };
         self.postMessage(e.data);
     }
 

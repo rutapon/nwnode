@@ -70,7 +70,7 @@
         },
         searchStartWith_limit: function (text, limit, cb) {
             //if (text.length < 2) {
-            //    this.serviceMethod.searchStartWith_limit(text, limit, cb);
+            //this.serviceMethod.searchStartWith_limit(text, limit, function (docs) { cb(docs, text); });
             //} else {
             this.ssw(text, limit, cb);
             //}
@@ -91,8 +91,9 @@
             this.serviceMethod.findWord(text, cb);
         },
         ssw: function (text, limit, cb) {
-            this.logWordObj.findWord(text, function (docs) {
-                cb(docs);
+            this.logWordObj.findWord(text, function (data) {
+
+                cb(data.docs, data.esearch);
             });
 
         }

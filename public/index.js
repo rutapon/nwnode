@@ -55,6 +55,7 @@ $(function () {
     //alert(window.location.protocol + window.location.port);
     mlabApiConn.k = "32KYjlie99BH6Euf8x98GQaOVbXAj-Zw";
     window.udl = {};
+    $("body").addClass('ui-disabled');
 
     if (window.location.protocol == 'https:') {
         protocol = 'wss:';
@@ -64,21 +65,27 @@ $(function () {
     }
     var serviceMethod = new NwStockServiceConn(wsClient);
 
-    wsClient.setOnConnectEventListener(function (socket) {
-        var id = wsClient.getId();
-        console.log('onConnect ' + id);
-    });
-
-    wsClient.setOnDisconnectEventListener(function myfunction() {
-
-    });
-
     var wordCollectionObj = new WordCollection();
     wordCollectionObj.setServiceMethod(serviceMethod);
 
     wordCollectionObj.add(NwdictDiscirpton);
     var wordViewObj = new app.views.WordView({ collection: wordCollectionObj });
-    $("body").addClass('ui-disabled');
+
+
+    wsClient.setOnConnectEventListener(function (socket) {
+        var id = wsClient.getId();
+        console.log('onConnect ' + id);
+
+        wordCollectionObj.initDB(function () {
+            $("body").removeClass('ui-disabled');
+            $.mobile.loading('hide');
+            $("#search-panel").panel("open");
+        });
+    });
+
+    wsClient.setOnDisconnectEventListener(function myfunction() {
+
+    });
 
     $.mobile.loading('show', {
         text: "Database Loading...",
@@ -87,19 +94,17 @@ $(function () {
         html: ""
     });
 
-    setTimeout(function () {
-        wordCollectionObj.initDB(function () {
-            $("body").removeClass('ui-disabled');
-            $.mobile.loading('hide');
-        });
-    }, 200);
-
     //wordCollectionObj.searchStartWith('new', function (docs) {
     //    $('body').append(JSON.stringify(docs));
     //}); 
 
     $("[data-role='navbar']").navbar();
     $("[data-role='header'], [data-role='footer']").toolbar();
+
+    //setTimeout(function () {
+
+    //}, 200);
+
 
     $.getJSON('//ip-api.com/json?callback=?', function (data) {
         window.udl.data = data;
