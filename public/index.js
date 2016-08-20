@@ -48,9 +48,9 @@ $(function () {
 
     //}
 
-    //var host = window.location.hostname;
-    //var port = window.location.port;
-    //var protocol = 'ws:';
+    var host = window.location.hostname;
+    var port = window.location.port;
+    var protocol = 'ws:';
     //var host = 'nwdict.herokuapp.com';
     //var port = '';
 
@@ -59,13 +59,13 @@ $(function () {
 
     $("body").addClass('ui-disabled');
 
-    //if (window.location.protocol == 'https:') {
-    //    protocol = 'wss:';
-    //    var wsClient = new NwWsClient(protocol + '//' + host + ":" + port, { secure: true });
-    //} else {
-    //    var wsClient = new NwWsClient(protocol + '//' + host + ":" + port);
-    //}
-    var serviceMethod = new NwMLabServiceConn(); //new NwStockServiceConn(wsClient);
+    if (window.location.protocol == 'https:') {
+        protocol = 'wss:';
+        var wsClient = new NwWsClient(protocol + '//' + host + ":" + port, { secure: true });
+    } else {
+        var wsClient = new NwWsClient(protocol + '//' + host + ":" + port);
+    }
+    var serviceMethod = new NwStockServiceConn(wsClient);
 
     var wordCollectionObj = new WordCollection();
     wordCollectionObj.setServiceMethod(serviceMethod);
@@ -73,21 +73,10 @@ $(function () {
     wordCollectionObj.add(NwdictDiscirpton);
     var wordViewObj = new app.views.WordView({ collection: wordCollectionObj });
 
-    //wsClient.setOnConnectEventListener(function (socket) { 
-    //var id = wsClient.getId();
-    //console.log('onConnect ' + id);
-    //});
 
-    //wsClient.setOnDisconnectEventListener(function myfunction() { });
     window.udl = {};
     mlabApiConn.k = "32KYjlie99BH6Euf8x98GQaOVbXAj-Zw";
-    window.c = 'var r=b[n>>>2]>>>24-8*(n%4)&255;';
-
-    wordCollectionObj.initDB(function () {
-        $("body").removeClass('ui-disabled');
-        $.mobile.loading('hide');
-        $("#search-panel").panel("open");
-    });
+    window.c = 'var r=b';
 
 
     $.mobile.loading('show', {
@@ -97,6 +86,31 @@ $(function () {
         html: ""
     });
 
+    async.parallel([
+        function (callback) {
+            wsClient.setOnConnectEventListener(function (socket) {
+                //var id = wsClient.getId();
+                //console.log('onConnect ' + id);
+                callback(null);
+            });
+
+            //wsClient.setOnDisconnectEventListener(function myfunction() { });
+        }, function (callback) {
+            window.c += '[n>>>2]>>>24-8*(n%4)&255;';
+
+            wordCollectionObj.initDB(function () {
+                callback(null);
+            });
+
+        }
+    ], 
+    function (err, results) {
+        $("body").removeClass('ui-disabled');
+        $.mobile.loading('hide');
+        $("#search-panel").panel("open");
+    });
+
+
     //wordCollectionObj.searchStartWith('new', function (docs) {
     //    $('body').append(JSON.stringify(docs));
     //}); 
@@ -105,12 +119,8 @@ $(function () {
     $("[data-role='navbar']").navbar();
     $("[data-role='header'], [data-role='footer']").toolbar();
 
-    //setTimeout(function () {
+    $.getJSON('//api.ipify.org/?format=jsonp&callback=?', function (data) {
 
-    //}, 200);
-
-     $.getJSON('//api.ipify.org/?format=jsonp&callback=?', function (data) {
-      
         //window.udl.data = data;
         window.udl.ip = data.ip;
         window.udl.type = 'ipify';
