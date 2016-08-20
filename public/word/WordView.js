@@ -146,8 +146,9 @@ var app = app || { models: {}, collections: {}, views: {} };
 
 
                 $("#search-panel").on('panelopen', function () {
-                    if (!$("#search").is(':focus')) {
+                    if (!$("#search").is(':focus')) {            
                         $('#search').select();
+                        $('#search').prompt();
                     }
                  
                 })
