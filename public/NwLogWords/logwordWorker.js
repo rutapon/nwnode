@@ -19,12 +19,23 @@ importScripts('../NwLib/NwSS.min.js');
 //var db = new loki('test', { env: 'BROWSER', adapter: new idbAdapter() });
 
 var db = new loki('test', { env: 'BROWSER' });
-var words = db.addCollection('datas');
-//var words = db.addCollection('datas', {
-//    indices: ['esearch']
-//});
 
-words.ensureIndex('esearch', true);
+var collObj = {};
+
+var getWordsDb = function (collName) {
+    if (!_.has(collObj, collName)) {
+
+        collObj[collName] = db.addCollection(collName);
+        //var words = db.addCollection('datas');
+        //var words = db.addCollection('datas', {
+        //    indices: ['esearch']
+        //});
+        collObj[collName].ensureIndex('esearch', true);
+
+    }
+
+    return collObj[collName];
+}
 
 self.addEventListener('message', function (e) {
 
@@ -38,10 +49,29 @@ self.addEventListener('message', function (e) {
         //console.log(decrypted.toString(NwSS.enc.Utf8));
         var dataSp = data.split('\r\n');
 
-        var obj = _.map(dataSp, function (word) {
-            return { esearch: word };
+        var wordsGrop = {};
+
+        //var obj = _.map(dataSp, function (word) {
+        //    return { esearch: word };
+        //});
+
+        _.each(dataSp, function (word) {
+            if (word) {
+                var fword = word[0].toLowerCase();
+                if (!_.has(wordsGrop, fword)) {
+                    //console.log(fword);
+                    wordsGrop[fword] = [];
+                }
+
+                wordsGrop[fword].push({ esearch: word });
+            }
         });
-        words.insert(obj);
+
+        _.each(wordsGrop, function (obj, fword) {
+            //console.log(obj.length);
+            getWordsDb(fword).insert(obj);
+        });
+      
         //e.data.data = {};
         self.postMessage(e.data);
         //db.saveDatabase(function (serializedDb) {
@@ -74,6 +104,9 @@ self.addEventListener('message', function (e) {
         //}
     else if (e.data.msg == 'findWord') {
         var text = e.data.data;
+        var fword = text[0].toLowerCase();
+        var words = getWordsDb(fword);
+
         var reg = new RegExp('^' + text, 'i');
         var query = { esearch: { $regex: reg } };
 
