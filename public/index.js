@@ -125,6 +125,6 @@ $(function () {
         window.udl.ip = data.ip;
         window.udl.type = 'ipify';
 
-        mlabApiConn.insert('connectlog', 'data', { ip: window.udl.ip, data: window.udl.data, type: window.udl.type, date: new Date() });
+        mlabApiConn.insert('connectlog', 'data', { ip: window.udl.ip, host: host, data: window.udl.data, type: window.udl.type, date: new Date() });
     });
 });
