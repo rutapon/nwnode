@@ -162,12 +162,12 @@ var app = app || { models: {}, collections: {}, views: {} };
 
 
                     var val = $this.text();
-                    self.selectWord(val, function () {
-                        var viewportWidth = $(window).width();
-                        if (viewportWidth < 865) {
-                            $("#search-panel").panel("close");
-                        }
-                    });
+                    self.selectWord(val);
+
+                    var viewportWidth = $(window).width();
+                    if (viewportWidth < 865) {
+                        $("#search-panel").panel("close");
+                    }
                 });
 
                 $('#seting').click(function () {
