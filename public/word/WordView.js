@@ -148,8 +148,8 @@ var app = app || { models: {}, collections: {}, views: {} };
 
                 $("#search-panel").on('panelopen', function () {
                     if (!$('#search').is(':focus')) {
-                        //$(textFiled).trigger("focus");
-                        $('#search').focus();
+                        $('#search').trigger("focus");
+                        //$('#search').focus();
                         $('#search').select();
                         //$('#search').prompt();
                     }
@@ -165,7 +165,7 @@ var app = app || { models: {}, collections: {}, views: {} };
                     self.selectWord(val, function () {
                         var viewportWidth = $(window).width();
                         if (viewportWidth < 865) {
-                            $("#search-panel").panel("open");
+                            $("#search-panel").panel("close");
                         }
                     });
                 });
