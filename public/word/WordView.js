@@ -54,6 +54,7 @@ var app = app || { models: {}, collections: {}, views: {} };
                         $("#search-panel").panel("close");
                     } else if (e.type === "swiperight") {
                         $("#search-panel").panel("open");
+                        $('#search').focus();
                         $('#search').select();
                     }
                 });
@@ -146,19 +147,27 @@ var app = app || { models: {}, collections: {}, views: {} };
 
 
                 $("#search-panel").on('panelopen', function () {
-                    if (!$("#search").is(':focus')) {            
+                    if (!$('#search').is(':focus')) {
+                        //$(textFiled).trigger("focus");
+                        $('#search').focus();
                         $('#search').select();
-                        $('#search').prompt();
+                        //$('#search').prompt();
                     }
-                 
+
                 })
 
                 $('#search-panel').on('click', '.searchWord', function () {
 
                     var $this = $(this);
 
+
                     var val = $this.text();
-                    self.selectWord(val);
+                    self.selectWord(val, function () {
+                        var viewportWidth = $(window).width();
+                        if (viewportWidth < 865) {
+                            $("#search-panel").panel("open");
+                        }
+                    });
                 });
 
                 $('#seting').click(function () {
