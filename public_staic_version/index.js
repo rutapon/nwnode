@@ -28,8 +28,9 @@ $(function () {
             { "tentry": "เน้นที่ความง่ายในการค้นหา", "ecat": "V" }],
         "hope": { "mn": [{ "tentry": "Special Characters <br> § = synonym<br>☯ = antonym<br> C = confer, compare" }] },
         "stm": {
-            "mn": [{ "ecat": "vt,vi", "tentry": "กดปุ่มที่มุมซ้ายบนเพื่อค้นหา" },
-                { "ecat": "vt,vi", "tentry": "กดแป้นพิมพ์เพื่อค้นหา" },
+            "mn": [
+                  { "ecat": "vt,vi", "tentry": "กดแป้นพิมพ์อักขระอะไรก็ได้เพื่อค้นหา" },
+                  { "ecat": "vt,vi", "tentry": "กดปุ่มที่มุมซ้ายบนเพื่อค้นหา" },
                   { "ecat": "vt,vi", "tentry": "drag mounse ที่หน้า page ไปด้านขวาเพื่อค้นหา" },
                   { "ecat": "vt,vi", "tentry": "เมื่อย่อหน้า page แคบลง word list จะซ่อนและโชว์โดยอัตโนมัติเมื่อค้นหา" },
 
