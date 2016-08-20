@@ -37,7 +37,7 @@ $(function () {
                 { "ecat": "*", "tentry": "ควรใช้ google chrome หรือ firefox ในการแสดงผล" }],
             //"esyn": "experiment, tax, try"
         },
-        "proTh": "นิวดิค'",
+        //"proTh": "นิวดิค'",
         "pro": ["njuːdɪk"],
 
     };
