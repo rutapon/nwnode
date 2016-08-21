@@ -14,8 +14,8 @@ fs.readFile("../../public//word/test/log/debug26.log", "utf-8", function (err, d
     var encrypted = AES.encrypt(data, key);
     var resultStr = encrypted.toString();
     console.log('resultStr',resultStr.length);    
-    //var decrypted = NwSS.SS.dct(encrypted.toString(), key)
-    ;
+    //var decrypted = NwSS.SS.dct(encrypted.toString(), key);
+
     fs.writeFile("../../public//word/test/log/debug62.log", resultStr, function (err) {
         if (err) {
             return console.log('error writeFile');

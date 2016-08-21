@@ -12,11 +12,11 @@ var async = require("async");
 var MD5 = require("crypto-js/md5");
 
 //var source = "./NewFolder1";
-var source = "./public";
-var sourceOverwrite = "./public_staic_version";
-var destination = '../NwDictStatic';
+var source = "public";
 
-var exclude = "../NwDictStatic/lib"
+var destination = 'public_minify';
+
+var exclude = 'public_minify' + "/lib"
 
 
 
@@ -111,21 +111,12 @@ var addMd5ToHtml = function (destination, fileIndex, cb) {
 }
 
 fs.copy(source, destination, function (err) {
-    fs.copy(sourceOverwrite, destination, function (err) {
-        if (err) {
-            return console.error(err);
-        }
+    addMd5ToHtml(destination, 'index.html', function () {
 
-
-        addMd5ToHtml(destination, 'index.html', function () {
-
-            //console.log('ncp done! start minifyAll');
-            exclude = exclude.replace(/\//g, '\\');
-            console.log('start minifyAll *exclude', exclude);
-            minifyAll(destination, exclude);
-        });
-
-
+        //console.log('ncp done! start minifyAll');
+        exclude = exclude.replace(/\//g, '\\');
+        console.log('start minifyAll *exclude', exclude);
+        minifyAll(destination, exclude);
     });
 });
 
